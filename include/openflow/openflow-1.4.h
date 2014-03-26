@@ -38,6 +38,7 @@
 #define OPENFLOW_14_H 1
 
 #include "openflow/openflow-1.3.h"
+#include "openvswitch/types.h"
 /*
  * OpenFlow 1.4 is more extensible by using TLV structures
  */
@@ -198,4 +199,32 @@ struct ofp14_bundle_add_msg {
     /* struct ofp14_bundle_prop_header properties[0]; */
 };
 OFP_ASSERT(sizeof(struct ofp14_bundle_add_msg) == 16);
+
+struct ofp14_match {
+	uint16_t type; /* One of OFPMT_* */
+	uint16_t length; /* Length of ofp_match (excluding padding) */
+	/* Followed by:
+	* - Exactly (length - 4) (possibly 0) bytes containing OXM TLVs, then
+	* - Exactly ((length + 7)/8*8 - length) (between 0 and 7) bytes of
+	* all-zero bytes
+	* In summary, ofp_match is padded as needed, to make its overall size
+	* a multiple of 8, to preserve alignement in structures using it.
+	*/
+	uint8_t oxm_fields[0]; /* 0 or more OXM match fields */
+	uint8_t pad[4]; /* Zero bytes - see above for sizing */
+};
+OFP_ASSERT(sizeof(struct ofp14_match) == 8);
+
+struct ofp14_flow_monitor_request {
+	uint32_t monitor_id; /* Controller-assigned ID for this monitor. */
+	uint32_t out_port; /* Required output port, if not OFPP_ANY. */
+	uint32_t out_group; /* Required output port, if not OFPG_ANY. */
+	uint16_t flags; /* OFFMF_*. */
+	uint8_t table_id; /* One table's ID or OFPTT_ALL (all tables). */
+	uint8_t command; /* One of OFPFMC_*. */
+	struct ofp14_match match; /* Fields to match. Variable size. */
+};
+OFP_ASSERT(sizeof(struct ofp14_flow_monitor_request) == 24);
+
+
 #endif /* openflow/openflow-1.4.h */

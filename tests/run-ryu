@@ -61,7 +61,7 @@ run ovsdb-server --detach --no-chdir --pidfile -vconsole:off --log-file \
     --remote=punix:"$sandbox"/db.sock
 
 # Start ovs-vswitchd.
-run ovs-vswitchd --detach --no-chdir --pidfile -vconsole:off --log-file \
+run ovs-vswitchd --enable-of14 --detach --no-chdir --pidfile -vconsole:off --log-file \
     --enable-dummy --disable-system -vvconn -vnetdev_dummy
 
 # Add bridges for Ryu to use, and configure them to connect to Ryu.
@@ -75,7 +75,7 @@ do
         -- add-br $bridge \
         -- set bridge $bridge \
                datapath-type=dummy fail-mode=secure \
-               protocols='[OpenFlow10,OpenFlow11,OpenFlow12,OpenFlow13]' \
+               protocols='[OpenFlow10,OpenFlow11,OpenFlow12,OpenFlow13,OpenFlow14]' \
                other-config:datapath-id=$dpid \
         -- set-controller $bridge tcp:127.0.0.1:6633 \
         -- set controller $bridge connection-mode=out-of-band \
@@ -120,20 +120,18 @@ EOF
 
 # Run Ryu.
 cd $RYUDIR
-for app in \
-    ryu/tests/switch/tester.py
-do
-    run_app $app
-done
+#for app in \
+#    ryu/tests/switch/tester.py
+#do
+#    run_app $app
+#done
 
 # tweak OVS setup because the following tests assume single bridge.
 run ovs-vsctl -- del-br br1
 
+#    ryu/tests/integrated/test_request_reply_v12.py
 for app in \
-    ryu/tests/integrated/test_add_flow_v10.py \
-    ryu/tests/integrated/test_request_reply_v12.py \
-    ryu/tests/integrated/test_add_flow_v12_actions.py \
-    ryu/tests/integrated/test_add_flow_v12_matches.py
+    ryu/tests/integrated/test_flow_monitor_v14.py
 do
     run_app $app
 done
