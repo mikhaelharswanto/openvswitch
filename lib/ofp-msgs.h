@@ -233,7 +233,7 @@ enum ofpraw {
     /* OFPT 1.4+ (30): struct ofp14_role_status, uint8_t[8][]. */
     OFPRAW_OFPT14_ROLE_STATUS,
 
-    /* OFPST 1.4+ (16): struct ofp14_flow_monitor_request. */
+    /* OFPST 1.4+ (16): struct ofp14_flow_monitor_request, uint8_t[8][]. */
     OFPRAW_OFPST14_FLOW_MONITOR_REQUEST,
 
     /* OFPST 1.4+ (16): void. */
