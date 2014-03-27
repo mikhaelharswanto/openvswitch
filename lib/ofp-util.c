@@ -3867,10 +3867,8 @@ ofputil_capabilities_mask(enum ofp_version ofp_version)
         return OFPC_COMMON | OFPC_ARP_MATCH_IP;
     case OFP12_VERSION:
     case OFP13_VERSION:
-        return OFPC_COMMON | OFPC12_PORT_BLOCKED;
     case OFP14_VERSION:
-        OVS_NOT_REACHED();
-        break;
+        return OFPC_COMMON | OFPC12_PORT_BLOCKED;
     default:
         /* Caller needs to check osf->header.version itself */
         return 0;
