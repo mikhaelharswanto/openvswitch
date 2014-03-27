@@ -141,6 +141,9 @@ enum ofperr {
     /* OF1.3+(1,13).  Multipart request overflowed the assigned buffer. */
     OFPERR_OFPBRC_MULTIPART_BUFFER_OVERFLOW,
 
+    /* OF1.4(1,2).  Multipart request type not supported. */
+    OFPERR_OFPBRC_BAD_MULTIPART,
+
     /* NX1.0-1.1(1,256), NX1.2+(2).  Invalid NXM flow match. */
     OFPERR_NXBRC_NXM_INVALID,
 
