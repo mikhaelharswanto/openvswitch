@@ -3759,7 +3759,8 @@ ofputil_put_phy_port(enum ofp_version ofp_version,
 
     case OFP11_VERSION:
     case OFP12_VERSION:
-    case OFP13_VERSION: {
+    case OFP13_VERSION:
+    case OFP14_VERSION: {
         struct ofp11_port *op;
         if (b->size + sizeof *op <= UINT16_MAX) {
             op = ofpbuf_put_uninit(b, sizeof *op);
@@ -3767,10 +3768,6 @@ ofputil_put_phy_port(enum ofp_version ofp_version,
         }
         break;
     }
-
-    case OFP14_VERSION:
-        OVS_NOT_REACHED();
-        break;
 
     default:
         OVS_NOT_REACHED();
@@ -3793,17 +3790,14 @@ ofputil_append_port_desc_stats_reply(enum ofp_version ofp_version,
 
     case OFP11_VERSION:
     case OFP12_VERSION:
-    case OFP13_VERSION: {
+    case OFP13_VERSION:
+    case OFP14_VERSION: {
         struct ofp11_port *op;
 
         op = ofpmp_append(replies, sizeof *op);
         ofputil_encode_ofp11_port(pp, op);
         break;
     }
-
-    case OFP14_VERSION:
-        OVS_NOT_REACHED();
-        break;
 
     default:
       OVS_NOT_REACHED();
@@ -5566,13 +5560,12 @@ ofputil_pull_phy_port(enum ofp_version ofp_version, struct ofpbuf *b,
     }
     case OFP11_VERSION:
     case OFP12_VERSION:
-    case OFP13_VERSION: {
+    case OFP13_VERSION:
+    case OFP14_VERSION: {
         const struct ofp11_port *op = ofpbuf_try_pull(b, sizeof *op);
         return op ? ofputil_decode_ofp11_port(pp, op) : EOF;
     }
-    case OFP14_VERSION:
-        OVS_NOT_REACHED();
-        break;
+
     default:
         OVS_NOT_REACHED();
     }
