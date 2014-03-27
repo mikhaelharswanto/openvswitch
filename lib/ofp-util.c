@@ -3988,6 +3988,8 @@ ofputil_encode_switch_features(const struct ofputil_switch_features *features,
     enum ofpraw raw;
 
     version = ofputil_protocol_to_ofp_version(protocol);
+    VLOG_INFO("###############################################");
+    VLOG_INFO("version %d", version);
     switch (version) {
     case OFP10_VERSION:
         raw = OFPRAW_OFPT10_FEATURES_REPLY;
@@ -4003,15 +4005,23 @@ ofputil_encode_switch_features(const struct ofputil_switch_features *features,
     default:
         OVS_NOT_REACHED();
     }
+    VLOG_INFO("CHECKPOINT 1");
     b = ofpraw_alloc_xid(raw, version, xid, 0);
+    VLOG_INFO("CHECKPOINT 1");
     osf = ofpbuf_put_zeros(b, sizeof *osf);
+    VLOG_INFO("CHECKPOINT 1");
     osf->datapath_id = htonll(features->datapath_id);
+    VLOG_INFO("CHECKPOINT 1");
     osf->n_buffers = htonl(features->n_buffers);
+    VLOG_INFO("CHECKPOINT 1");
     osf->n_tables = features->n_tables;
+    VLOG_INFO("CHECKPOINT 1.1");
 
     osf->capabilities = htonl(features->capabilities & OFPC_COMMON);
+    VLOG_INFO("CHECKPOINT 1");
     osf->capabilities = htonl(features->capabilities &
                               ofputil_capabilities_mask(version));
+    VLOG_INFO("CHECKPOINT 1.2");
     switch (version) {
     case OFP10_VERSION:
         if (features->capabilities & OFPUTIL_C_STP) {
@@ -4021,6 +4031,7 @@ ofputil_encode_switch_features(const struct ofputil_switch_features *features,
         break;
     case OFP13_VERSION:
     case OFP14_VERSION:
+	VLOG_INFO("CHECKPOINT 2");
         osf->auxiliary_id = features->auxiliary_id;
         /* fall through */
     case OFP11_VERSION:
@@ -4030,6 +4041,7 @@ ofputil_encode_switch_features(const struct ofputil_switch_features *features,
         }
         break;
     default:
+    VLOG_INFO("CHECKPOINT 1");
         OVS_NOT_REACHED();
     }
 
