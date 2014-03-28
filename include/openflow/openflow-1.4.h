@@ -222,7 +222,7 @@ struct ofp14_flow_monitor_request {
 	uint16_t flags; /* OFFMF_*. */
 	uint8_t table_id; /* One table's ID or OFPTT_ALL (all tables). */
 	uint8_t command; /* One of OFPFMC_*. */
-	struct ofp14_match match; /* Fields to match. Variable size. */
+	/* struct ofp14_match match; Fields to match. Variable size. */
 };
 OFP_ASSERT(sizeof(struct ofp14_flow_monitor_request) == 24);
 

@@ -4973,7 +4973,7 @@ handle_of14_flow_monitor_request(struct ofconn *ofconn, const struct ofp_header 
         struct ofmonitor *m;
         int retval;
 
-        retval = ofputil_decode_flow_monitor_request(&request, &b);
+        retval = ofputil_of_decode_flow_monitor_request(&request, &b);
         if (retval == EOF) {
             break;
         } else if (retval) {

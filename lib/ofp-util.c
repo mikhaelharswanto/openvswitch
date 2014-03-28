@@ -4977,8 +4977,7 @@ ofputil_of_decode_flow_monitor_request(struct ofputil_flow_monitor_request *rq,
     rq->out_port = u16_to_ofp(ntohs(ofmr->out_port));
     rq->table_id = ofmr->table_id;
 
-    match = &ofmr->match;
-    return nx_pull_match(msg, ntohs(match->length), &rq->match, NULL, NULL);
+    return oxm_pull_match(msg, &rq->match);
 }
 
 void
